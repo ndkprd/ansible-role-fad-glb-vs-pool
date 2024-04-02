@@ -10,6 +10,10 @@ fad_glb_servers:
         health_check_relationship: AND
         server_type: Generic-Host
         auth_type: none
+        auto_syc: disable
+        fad_ip: 0.0.0.0
+        fad_pass: ""
+        fad_port: 5858
         server_member:
           - name: waf1.dmz.dc1.ndkprd.com
             ip: 10.10.10.10
@@ -23,6 +27,10 @@ fad_glb_servers:
         health_check_relationship: AND
         server_type: Generic-Host
         auth_type: none
+        auto_syc: disable
+        fad_ip: 0.0.0.0
+        fad_pass: ""
+        fad_port: 5858
         server_member:
           - name: waf1.dmz.dc2.ndkprd.com
             ip: 10.20.10.10
