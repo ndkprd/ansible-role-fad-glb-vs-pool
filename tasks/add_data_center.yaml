@@ -25,7 +25,7 @@
   ansible.builtin.copy:
     content: |
       {
-        "mkey": "{{ item.dc_name }}"
+        "mkey": "{{ item.dc_name }}",
         "location": "{{ item.location }}"
       }
     dest: "/tmp/fad_glb_dc_{{ item.dc_name }}_request_body.json"
