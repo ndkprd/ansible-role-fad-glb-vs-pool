@@ -10,7 +10,7 @@ fad_glb_servers:
         health_check_relationship: AND
         server_type: Generic-Host
         auth_type: none
-        auto_syc: disable
+        auto_sync: disable
         fad_ip: 0.0.0.0
         fad_pass: ""
         fad_port: 5858
@@ -27,7 +27,7 @@ fad_glb_servers:
         health_check_relationship: AND
         server_type: Generic-Host
         auth_type: none
-        auto_syc: disable
+        auto_sync: disable
         fad_ip: 0.0.0.0
         fad_pass: ""
         fad_port: 5858
