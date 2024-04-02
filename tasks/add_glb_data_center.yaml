@@ -4,7 +4,7 @@
 
 - name: Print out the GLB DC REST API endpoint ({{ item.dc_name }}).
   ansible.builtin.debug:
-    msg: "This FAD GLB DC REST API endpoint: {{ fad_api_endpoint_glb_servers }}"
+    msg: "This FAD GLB DC REST API endpoint: {{ fad_api_endpoint_glb_dc }}"
   tags:
     - debug
 
