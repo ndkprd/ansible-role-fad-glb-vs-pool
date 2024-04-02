@@ -8,10 +8,10 @@
     headers:
       'Content-Type': 'application/json'
       'APITOKEN': '{{ fad_apitoken }}'
-    register: fad_glb_dc_existing_data
-    delegate_to: localhost
-    tags:
-      - debug
+  register: fad_glb_dc_existing_data
+  delegate_to: localhost
+  tags:
+    - debug
 
 - name: Print the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.debug:
@@ -22,13 +22,13 @@
 
 - name: Write request body json tmp file ({{ item.dc_name }}).
   ansible.builtin.copy:
-  content: |
-    {
-      "mkey": "{{ item.dc_name }}"
-      "location": "{{ item.location }}"
-    }
-  dest: "/tmp/fad_glb_dc_{{ item.dc_name }}_request_body.json"
-  mode: u+rw,g-rw,o-rw
+    content: |
+      {
+        "mkey": "{{ item.dc_name }}"
+        "location": "{{ item.location }}"
+      }
+    dest: "/tmp/fad_glb_dc_{{ item.dc_name }}_request_body.json"
+    mode: u+rw,g-rw,o-rw
   register: request_body
   delegate_to: localhost
   run_once: true
@@ -77,10 +77,10 @@
     headers:
       'Content-Type': 'application/json'
       'APITOKEN': '{{ fad_apitoken }}'
-    register: fad_glb_dc_existing_data
-    delegate_to: localhost
-    tags:
-      - debug
+  register: fad_glb_dc_existing_data
+  delegate_to: localhost
+  tags:
+    - debug
 
 - name: Print the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.debug:
