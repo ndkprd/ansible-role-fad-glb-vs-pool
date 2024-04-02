@@ -1,0 +1,7 @@
+fad_vdom: root
+
+fad_glb_dc:
+  - dc_name: dc1.ndkprd.com # Data Center name
+    location: ID # 2 letters country ID
+  - dc_name: dc2.ndkprd.com
+    location: ID

@@ -1,0 +1,1 @@
+- name: Get the existing value of data center entry ({{ item.dc_name }})
