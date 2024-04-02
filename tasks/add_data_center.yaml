@@ -1,7 +1,7 @@
 - name: Get the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+    url: "{{ fad_api_endpoint.glb_dc }}"
     body_format: json
     validate_certs: false
     return_content: true
@@ -35,7 +35,7 @@
 - name: Trying to create new data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: POST
-    url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
+    url: "{{ fad_api_endpoint.glb_dc }}"
     body_format: json
     validate_certs: false
     return_content: true
@@ -52,7 +52,7 @@
 - name: Update the data center entry if entry exist ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: PUT
-    url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
+    url: "{{ fad_api_endpoint.glb_dc }}"
     body_format: json
     validate_certs: false
     return_content: true
@@ -69,7 +69,7 @@
 - name: Check if the data center value has changed ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+    url: "{{ fad_api_endpoint.glb_dc }}"
     body_format: json
     validate_certs: false
     return_content: true
