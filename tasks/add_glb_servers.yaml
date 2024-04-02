@@ -83,7 +83,7 @@
   when: "fad_glb_servers_post_result.json.payload == -15"
   failed_when: "fad_glb_servers_put_result.json.payload != -15 and fad_glb_servers_put_result.json.payload != 0"
 
-- name: Include the FAD GLB Servers Virtual Server task ({{ glb_server.name }}).
+- name: Include the FAD GLB Servers member task ({{ glb_server.name }}).
   ansible.builtin.include_tasks: add_glb_servers_member.yaml
   loop: "{{ glb_server.server_members }}"
   loop_control:
