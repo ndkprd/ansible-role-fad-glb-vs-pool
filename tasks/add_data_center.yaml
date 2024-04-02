@@ -66,7 +66,7 @@
   register: fad_glb_dc_new_data
   delegate_to: localhost
   changed_when: "fad_glb_dc_new_data.json.payload == 0"
-  failed_when: "fad_glb_dc_new_data.json.payload != -15 and fad_glb_data_new_data.json.payload != 0"
+  failed_when: "fad_glb_dc_new_data.json.payload != -15 and fad_glb_dc_new_data.json.payload != 0"
 
 - name: Get the new value of data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
