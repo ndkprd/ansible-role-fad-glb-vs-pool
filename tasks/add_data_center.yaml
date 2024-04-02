@@ -1,1 +1,90 @@
-- name: Get the existing value of data center entry ({{ item.dc_name }})
+- name: Get the existing value of data center entry ({{ item.dc_name }}).
+  ansible.builtin.uri:
+    method: GET
+    url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+    body_format: json
+    validate_certs: false
+    status_code: true
+    headers:
+      'Content-Type': 'application/json'
+      'APITOKEN': '{{ fad_apitoken }}'
+    register: fad_glb_dc_existing_data
+    delegate_to: localhost
+    tags:
+      - debug
+
+- name: Print the existing value of data center entry ({{ item.dc_name }}).
+  ansible.builtin.debug:
+    var: fad_glb_dc_existing_data.json
+  delegate_to: localhost
+  tags:
+    - debug
+
+- name: Write request body json tmp file {{ item.dc_name }}.
+  ansible.builtin.copy:
+  content: |
+    {
+      "mkey": "{{ item.dc_name }}"
+      "location": "{{ item.location }}"
+    }
+  dest: "/tmp/fad_glb_dc_{{ item.dc_name }}_request_body.json"
+  mode: u+rw,g-rw,o-rw
+  register: request_body
+  delegate_to: localhost
+  run_once: true
+
+- name: Trying to create new data center entry {{ item.dc_name }}.
+  ansible.builtin.uri:
+    method: POST
+    url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
+    body_format: json
+    validate_certs: false
+    return_content: true
+    status_code: 200
+    headers:
+      'Content-Type': 'application/json'
+      'APITOKEN': '{{ fad_apitoken }}'
+    body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
+  register: fad_glb_dc_new_data
+  delegate_to: localhost
+  changed_when: "fad_glb_dc_new_data.json.payload == 0"
+  failed_when: "fad_glb_dc_new_data.json.payload != -15 and fad_glb_host_new_data.json.payload != 0"
+
+- name: Update the data center entry if entry exist {{ item.dc_name }}.
+  ansible.builtin.uri:
+    method: PUT
+    url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
+    body_format: json
+    validate_certs: false
+    return_content: true
+    status_code: 200
+    headers:
+      'Content-Type': 'application/json'
+      'APITOKEN': '{{ fad_apitoken }}'
+    body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
+  register: fad_glb_dc_new_data
+  delegate_to: localhost
+  changed_when: "fad_glb_dc_new_data.json.payload == 0"
+  failed_when: "fad_glb_dc_new_data.json.payload != -15 and fad_glb_host_new_data.json.payload != 0"
+
+- name: Get the new value of data center entry ({{ item.dc_name }}).
+  ansible.builtin.uri:
+    method: GET
+    url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+    body_format: json
+    validate_certs: false
+    status_code: true
+    headers:
+      'Content-Type': 'application/json'
+      'APITOKEN': '{{ fad_apitoken }}'
+    register: fad_glb_dc_existing_data
+    delegate_to: localhost
+    tags:
+      - debug
+
+- name: Print the existing value of data center entry ({{ item.dc_name }}).
+  ansible.builtin.debug:
+    var: fad_glb_dc_existing_data.json
+  delegate_to: localhost
+  tags:
+    - debug
