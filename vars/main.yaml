@@ -9,6 +9,3 @@ fad_api_uri_params:
 fad_api_header:
   'Content-Type': 'application/json'
   'APITOKEN': '{{ fad_apitoken }}'
-
-fad_api_endpoints:
-  glb_dc: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}

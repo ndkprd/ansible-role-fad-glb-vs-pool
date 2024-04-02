@@ -1,7 +1,17 @@
+- name: Set GLB DC REST API endpoint ({{ item.dc_name }}).
+  ansible.builtin.set_fact:
+    fad_api_endpoint_glb_dc: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+
+- name: Print out the GLB DC REST API endpoint ({{ item.dc_name }}).
+  ansible.builtin.debug:
+    msg: "This FAD GLB DC REST API endpoint: {{ fad_api_endpoint_glb_servers }}"
+  tags:
+    - debug
+
 - name: Get the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoints.glb_dc }}"
+    url: "{{ fad_api_endpoint_glb_dc }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
@@ -33,7 +43,7 @@
 - name: Trying to create new data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: POST
-    url: "{{ fad_api_endpoints.glb_dc }}"
+    url: "{{ fad_api_endpoint_glb_dc }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
@@ -48,7 +58,7 @@
 - name: Update the data center entry if entry exist ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: PUT
-    url: "{{ fad_api_endpoints.glb_dc }}"
+    url: "{{ fad_api_endpoint_glb_dc }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
@@ -63,7 +73,7 @@
 - name: Check if the data center value has changed ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoints.glb_dc }}"
+    url: "{{ fad_api_endpoint_glb_dc }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"

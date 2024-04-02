@@ -1,6 +1,12 @@
-- name: Set fad_glb_servers api endpoint var ({{ glb_server.name }}).
+- name: Set fad_glb_servers REST API endpoint var ({{ glb_server.name }}).
   ansible.builtin.set_fact:
     fad_api_endpoint_glb_servers: https://{{ ansible_host }}/api/global_load_balance_servers?vdom={{ fad_vdom }}&mkey={{ glb_server.name }}
+
+- name: Print out the GLB servers REST API endpoint ({{ glb_server.name }}).
+  ansible.builtin.debug:
+    msg: "This FAD GLB servers REST API endpoint: {{ fad_api_endpoint_glb_servers }}"
+  tags:
+    - debug
 
 - name: Get the existing value of GLB servers entry ({{ glb_server.name }}).
   ansible.builtin.uri:
