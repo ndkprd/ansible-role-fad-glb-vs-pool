@@ -20,7 +20,7 @@
   tags:
     - debug
 
-- name: Write request body json tmp file {{ item.dc_name }}.
+- name: Write request body json tmp file ({{ item.dc_name }}).
   ansible.builtin.copy:
   content: |
     {
@@ -33,7 +33,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: Trying to create new data center entry {{ item.dc_name }}.
+- name: Trying to create new data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: POST
     url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
@@ -50,7 +50,7 @@
   changed_when: "fad_glb_dc_new_data.json.payload == 0"
   failed_when: "fad_glb_dc_new_data.json.payload != -15 and fad_glb_host_new_data.json.payload != 0"
 
-- name: Update the data center entry if entry exist {{ item.dc_name }}.
+- name: Update the data center entry if entry exist ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: PUT
     url: "https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}"
