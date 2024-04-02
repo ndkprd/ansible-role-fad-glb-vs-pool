@@ -20,14 +20,14 @@
   register: fad_glb_servers_existing_data
   delegate_to: localhost
 
-- name: Print the existing value of data center entry ({{ glb_server.name }}).
+- name: Print the existing value of GLB Servers entry ({{ glb_server.name }}).
   ansible.builtin.debug:
     var: fad_glb_servers_existing_data.json.payload
   delegate_to: localhost
   tags:
     - debug
 
-- name: Write request body json tmp file ({{ glb_server.name }}).
+- name: Write GLB Servers request body json tmp file ({{ glb_server.name }}).
   ansible.builtin.copy:
     content: |
       {
@@ -53,7 +53,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: Trying to create new data center entry ({{ glb_server.name }}).
+- name: Trying to create new GLB Servers entry ({{ glb_server.name }}).
   ansible.builtin.uri:
     method: POST
     url: "{{ fad_api_endpoint_glb_servers }}"
@@ -66,4 +66,4 @@
   register: fad_glb_servers_post_result
   delegate_to: localhost
   changed_when: "fad_glb_servers_post_result.json.payload == 0"
-  failed_when: "fad_glb_servers_post_result.json.payload != -15 and fad_glb_dc_post_result.json.payload != 0"
+  failed_when: "fad_glb_servers_post_result.json.payload != -15 and fad_glb_servers_post_result.json.payload != 0"
