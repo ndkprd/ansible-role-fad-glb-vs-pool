@@ -79,3 +79,9 @@
   delegate_to: localhost
   tags:
     - debug
+
+- name: Include add GLB server task ({{ item.dc_name }}).
+  ansible.builtin.include_tasks:  add_glb_servers.yaml
+  loop: "{{ item.glb_servers }}"
+  loop_control:
+    loop_vars: glb_server

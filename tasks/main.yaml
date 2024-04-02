@@ -1,5 +1,5 @@
 ---
 
 - name: include the add data center task.
-  ansible.builtin.include_tasks: add_data_center.yaml
+  ansible.builtin.include_tasks: add_glb_data_center.yaml
   loop: "{{ fad_glb_dc }}"

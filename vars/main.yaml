@@ -12,3 +12,4 @@ fad_api_header:
 
 fad_api_endpoints:
   glb_dc: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
+  glb_servers: https://{{ ansible_host }}/api/global_load_balance_servers?vdom={{ fad_vdom }}&mkey={{ item.glb_servers.name }}

@@ -1,0 +1,18 @@
+- name: Get the existing value of GLB servers entry ({{ glb_server.name }}).
+  ansible.builtin.uri:
+    method: GET
+    url: "{{ fad_api_endpoints.glb_servers }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
+  register: fad_glb_servers_existing_data
+  delegate_to: localhost
+
+- name: Print the existing value of data center entry ({{ glb_server.name }}).
+  ansible.builtin.debug:
+    var: fad_glb_servers_existing_data.json.payload
+  delegate_to: localhost
+  tags:
+    - debug

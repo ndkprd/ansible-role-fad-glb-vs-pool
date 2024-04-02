@@ -1,7 +1,29 @@
 fad_vdom: root
 
-fad_glb_dc:
+fad_glb_servers:
   - dc_name: dc1.ndkprd.com # Data Center name
     location: ID # 2 letters country ID
+    glb_servers:
+      - name: "dmz.dc1.ndkprd.com"
+        health_check_ctrl: enable
+        health_check_list: LB_HLTHCK_ICMP
+        health_check_relationship: AND
+        server_type: Generic-Host
+        auth_type: none
+        server_member:
+          - name: waf1.dmz.dc1.ndkprd.com
+            ip: 10.10.10.10
+            health_check_inherit: enable
   - dc_name: dc2.ndkprd.com
     location: ID
+    glb_servers:
+      - name: "dmz.dc2.ndkprd.com"
+        health_check_ctrl: enable
+        health_check_list: LB_HLTHCK_ICMP
+        health_check_relationship: AND
+        server_type: Generic-Host
+        auth_type: none
+        server_member:
+          - name: waf1.dmz.dc2.ndkprd.com
+            ip: 10.20.10.10
+            health_check_inherit: enable
