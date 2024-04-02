@@ -4,7 +4,8 @@
     url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
     body_format: json
     validate_certs: false
-    status_code: true
+    return_content: true
+    status_code: 200
     headers:
       'Content-Type': 'application/json'
       'APITOKEN': '{{ fad_apitoken }}'
@@ -73,18 +74,19 @@
     url: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ item.dc_name }}
     body_format: json
     validate_certs: false
-    status_code: true
+    return_content: true
+    status_code: 200
     headers:
       'Content-Type': 'application/json'
       'APITOKEN': '{{ fad_apitoken }}'
-  register: fad_glb_dc_existing_data
+  register: fad_glb_dc_new_data
   delegate_to: localhost
   tags:
     - debug
 
 - name: Print the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.debug:
-    var: fad_glb_dc_existing_data.json
+    var: fad_glb_dc_new_data.json
   delegate_to: localhost
   tags:
     - debug
