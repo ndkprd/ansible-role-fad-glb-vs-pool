@@ -6,9 +6,7 @@
     validate_certs: false
     return_content: true
     status_code: 200
-    headers:
-      'Content-Type': 'application/json'
-      'APITOKEN': '{{ fad_apitoken }}'
+    headers: "{{ fad_api_header }}"
   register: fad_glb_dc_existing_data
   delegate_to: localhost
 
