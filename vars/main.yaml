@@ -1,6 +1,6 @@
 ---
 
-fad_api_header: |
+fad_api_header:
   'Content-Type': 'application/json'
   'APITOKEN': '{{ fad_apitoken }}'
 
