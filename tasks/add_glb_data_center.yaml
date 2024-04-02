@@ -84,4 +84,4 @@
   ansible.builtin.include_tasks:  add_glb_servers.yaml
   loop: "{{ item.glb_servers }}"
   loop_control:
-    loop_var: item_glb_server
+    loop_var: glb_server
