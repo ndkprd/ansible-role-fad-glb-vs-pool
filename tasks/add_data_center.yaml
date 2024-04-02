@@ -1,11 +1,11 @@
 - name: Get the existing value of data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoint.glb_dc }}"
-    body_format: json
-    validate_certs: false
-    return_content: true
-    status_code: 200
+    url: "{{ fad_api_endpoints.glb_dc }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
     headers: "{{ fad_api_header }}"
   register: fad_glb_dc_existing_data
   delegate_to: localhost
@@ -33,14 +33,12 @@
 - name: Trying to create new data center entry ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: POST
-    url: "{{ fad_api_endpoint.glb_dc }}"
-    body_format: json
-    validate_certs: false
-    return_content: true
-    status_code: 200
-    headers:
-      'Content-Type': 'application/json'
-      'APITOKEN': '{{ fad_apitoken }}'
+    url: "{{ fad_api_endpoints.glb_dc }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
     body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
   register: fad_glb_dc_post_result
   delegate_to: localhost
@@ -50,14 +48,12 @@
 - name: Update the data center entry if entry exist ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: PUT
-    url: "{{ fad_api_endpoint.glb_dc }}"
-    body_format: json
-    validate_certs: false
-    return_content: true
-    status_code: 200
-    headers:
-      'Content-Type': 'application/json'
-      'APITOKEN': '{{ fad_apitoken }}'
+    url: "{{ fad_api_endpoints.glb_dc }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
     body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
   register: fad_glb_dc_put_result
   delegate_to: localhost
@@ -67,14 +63,12 @@
 - name: Check if the data center value has changed ({{ item.dc_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoint.glb_dc }}"
-    body_format: json
-    validate_certs: false
-    return_content: true
-    status_code: 200
-    headers:
-      'Content-Type': 'application/json'
-      'APITOKEN': '{{ fad_apitoken }}'
+    url: "{{ fad_api_endpoints.glb_dc }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
   register: fad_glb_dc_new_data
   changed_when: "fad_glb_dc_new_data.json.payload != fad_glb_dc_existing_data.json.payload"
   delegate_to: localhost
