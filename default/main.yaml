@@ -4,20 +4,20 @@ fad_glb_servers:
   - dc_name: dc1.ndkprd.com # Data Center name
     location: ID # 2 letters country ID
     glb_servers:
-      - name: "dmz.dc1.ndkprd.com"
-        health_check_ctrl: enable
-        health_check_list: LB_HLTHCK_ICMP
-        health_check_relationship: AND
-        server_type: Generic-Host
-        auth_type: none
-        auto_sync: disable
-        fad_ip: 0.0.0.0
-        fad_pass: ""
-        fad_port: 5858
+      - name: "dmz.dc1.ndkprd.com" # GLB servers mkey
+        health_check_ctrl: enable # "enable" or "disable"
+        health_check_list: LB_HLTHCK_ICMP # must exists
+        health_check_relationship: AND # either "AND" or "OR"
+        server_type: Generic-Host # "Generic-Host" or "FortiADC-SLB"
+        auth_type: none # check FortiADC docs
+        auto_sync: disable # "enable" only when server_type: FortiADC-SLB
+        fad_ip: 0.0.0.0 # FortiADC IP if using server_type: FortiADC-SLB
+        fad_pass: "" # FortiADC admin pass if using server_type: FortiADC-SLB
+        fad_port: 5858 # FortiADC sync port if using server_type: FortiADC-SLB
         server_member:
-          - name: waf1.dmz.dc1.ndkprd.com
-            ip: 10.10.10.10
-            health_check_inherit: enable
+          - name: waf1.dmz.dc1.ndkprd.com # GLB servers child mkey
+            ip: 10.10.10.10 # GLB servers IP address
+            health_check_inherit: enable # just enable inherit to reduce headache
   - dc_name: dc2.ndkprd.com
     location: ID
     glb_servers:
