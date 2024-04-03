@@ -1,6 +1,6 @@
 ---
 
-- name: Create/update data center using role ({{ data_center.name }}).
+- name: Create/update GLB Data Centers using role.
   ansible.builtin.include_role: ndkprd.fortiadc-glb-data-center
   loop: "{{ fad_glb_data_centers }}"
   loop_control:
