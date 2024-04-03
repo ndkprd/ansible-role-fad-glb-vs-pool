@@ -1,9 +1,10 @@
 ---
 
-- name: Include task to include role to create/update GLB Data Centers, Servers, and Servers Members using role.
-  ansible.builtin.include_tasks: include_role.yaml
+- name: Create/update GLB Data Centers, Servers, and Servers Members using role.
+  ansible.builtin.include_role: 
+    name: ndkprd.fortiadc-glb-servers
   tags:
-    - preparation
+    - prepare
 
 - name: Include task to create/update GLB VSP.
   ansible.builtin.include_tasks: add_glb_vs_pools.yaml
