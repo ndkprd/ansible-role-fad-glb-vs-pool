@@ -8,6 +8,6 @@
   ansible.builtin.include_tasks: add_glb_vs_pools.yaml
   loop: "{{ fad_glb_vs_pools }}"
   loop_control:
-    loop_var: server_pool
+    loop_var: vs_pool
   tags:
     - fad_glb_vsp

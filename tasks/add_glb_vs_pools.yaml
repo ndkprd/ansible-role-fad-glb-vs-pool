@@ -1,10 +1,10 @@
-- name: Create/update GLB VS Pools tasks block (({{ server_pool.name }})).
+- name: Create/update GLB VS Pools tasks block (({{ vs_pool.name }})).
   block:
 
-    - name: Set FAD GLB VS Pools REST API endpoint vars ({{ server_pool.name }}).
+    - name: Set FAD GLB VS Pools REST API endpoint vars ({{ vs_pool.name }}).
       ansible.builtin.set_fact:
-        fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ server_pool.name }}
-        fad_glb_vs_pools_name: "{{ server_pool.name }}"
+        fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ vs_pool.name }}
+        fad_glb_vs_pools_name: "{{ vs_pool.name }}"
 
     - name: Print out the GLB VS Pools REST API endpoint ({{ fad_glb_vs_pools_name }}).
       ansible.builtin.debug:
@@ -37,16 +37,16 @@
           {
             "alternate": "",
             "alternate-cmr": "",
-            "check-server-status": "{{ server_pool.check_server_status }}",
-            "check-virtual-server-existent": "{{ server_pool.check_virtual_server_existent }}",
-            "load-balance-method": "{{ server_pool.load_balance_method }}",
-            "mkey": "{{ server_pool.name }}",
+            "check-server-status": "{{ vs_pool.check_server_status }}",
+            "check-virtual-server-existent": "{{ vs_pool.check_virtual_server_existent }}",
+            "load-balance-method": "{{ vs_pool.load_balance_method }}",
+            "mkey": "{{ vs_pool.name }}",
             "preferred": "",
             "preferred-cmr": "",
             "vs_pool_member": "",
             "vs_pool_member_count": ""
           }
-        dest: "/tmp/fad_glb_vs_pools_{{ server_pool.name }}_request_body.json"
+        dest: "/tmp/fad_glb_vs_pools_{{ vs_pool.name }}_request_body.json"
         mode: u+rw,g-rw,o-rw
       register: request_body
       delegate_to: localhost
@@ -84,7 +84,7 @@
 
     - name: Include the FAD GLB VS Pools member task ({{ fad_glb_vs_pools_name }}).
       ansible.builtin.include_tasks: add_glb_vs_pool_members.yaml
-      loop: "{{ server_pool.vs_pool_members }}"
+      loop: "{{ vs_pool.vs_pool_members }}"
       loop_control:
         loop_var: vs_pool_member
 
