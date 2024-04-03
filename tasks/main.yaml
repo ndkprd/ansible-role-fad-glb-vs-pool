@@ -3,7 +3,7 @@
 - name: Create/update GLB Data Centers, Servers, and Servers Members using role.
   ansible.builtin.include_role: 
     name: ndkprd.fortiadc-glb-servers
-  when: "role_env == prod"
+  when: "role_env == 'prod'"
 
 - name: Include task to create/update GLB VSP.
   ansible.builtin.include_tasks: add_glb_vs_pools.yaml
