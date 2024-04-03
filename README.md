@@ -1,4 +1,4 @@
-# ansible-role-fortiadc-glb-vsp
+# ansible-role-fortiadc-glb
 
 ## Description
 
