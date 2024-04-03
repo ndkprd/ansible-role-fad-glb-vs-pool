@@ -84,7 +84,7 @@
 
     - name: Include the FAD GLB VS Pools member task ({{ fad_glb_vs_pools_name }}).
       ansible.builtin.include_tasks: add_glb_servers_members.yaml
-      loop: "{{ glb_server.server_members }}"
+      loop: "{{ server_pool.vs_pool_members }}"
       loop_control:
         loop_var: vs_pool_member
 
