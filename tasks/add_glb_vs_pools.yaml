@@ -2,11 +2,14 @@
   ansible.builtin.set_fact:
     fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ server_pool.name }}
     fad_glb_vs_pools_name: "{{ server_pool.name }}"
+  tags:
+    - fad_glb_vsp
 
 - name: Print out the GLB VS Pools REST API endpoint ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.debug:
     msg: "This FAD GLB VS Pools REST API endpoint: {{ fad_api_endpoint_glb_vs_pools }}"
   tags:
+    - fad_glb_vsp
     - debug
 
 # - name: Get the existing value of GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
