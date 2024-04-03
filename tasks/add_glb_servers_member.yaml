@@ -78,12 +78,6 @@
   when: "fad_server_members_post_result.json.payload == -15"
   failed_when: "fad_server_members_put_result.json.payload != -15 and fad_server_members_put_result.json.payload != 0"
 
-# - name: Include the FAD GLB Servers Virtual Server task ({{ server_member.name }}).
-#   ansible.builtin.include_tasks: add_server_members_member.yaml
-#   loop: "{{ server_member.server_members }}"
-#   loop_control:
-#     loop_var: server_member
-
 - name: Check if the FAD GLB Servers member values has changed ({{ fad_glb_servers_member_name }}).
   ansible.builtin.uri:
     method: GET

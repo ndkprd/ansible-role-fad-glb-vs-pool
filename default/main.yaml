@@ -17,7 +17,7 @@ fad_glb_data_centers:
         server_members:
           - name: waf1.dmz.dc1.ndkprd.com # GLB servers child mkey
             ip: 10.10.10.10 # GLB servers IP address
-            health_check_inherit: enable # just enable inherit to reduce headache
+            health_check_inherit: enable # I just enable inherit to reduce headache
   - name: dc2.ndkprd.com
     location: ID
     glb_servers:
