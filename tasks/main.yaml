@@ -4,7 +4,7 @@
   ansible.builtin.include_role: 
     name: ndkprd.fortiadc-glb-servers
   tags:
-    - role_dependencies
+    - role_dependency
 
 - name: Include task to create/update GLB VSP.
   ansible.builtin.include_tasks: add_glb_vs_pools.yaml
