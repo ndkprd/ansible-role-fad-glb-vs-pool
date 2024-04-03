@@ -10,4 +10,4 @@
   loop_control:
     loop_var: server_pool
   tags:
-    - fad-glb-vsp
+    - fad_glb_vsp
