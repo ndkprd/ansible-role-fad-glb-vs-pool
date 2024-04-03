@@ -1,6 +1,6 @@
-- name: Set FAD GLB VS Pools REST API endpoint vars ({{ glb_server.name }}).
+- name: Set FAD GLB VS Pools REST API endpoint vars ({{ server_pool.name }}).
   ansible.builtin.set_fact:
-    fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ glb_server.name }}
+    fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ server_pool.name }}
     fad_glb_vs_pools_name: "{{ server_pool.name }}"
 
 - name: Print out the GLB servers REST API endpoint ({{ fad_glb_vs_pools_name }}).
