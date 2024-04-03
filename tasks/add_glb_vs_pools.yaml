@@ -1,38 +1,37 @@
-- name: Set FAD GLB VS Pools REST API endpoint vars ({{ server_pool.name }}).
-  ansible.builtin.set_fact:
-    fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ server_pool.name }}
-    fad_glb_vs_pools_name: "{{ server_pool.name }}"
-  tags:
-    - fad_glb_vsp
+- name: Create/update GLB VS Pools tasks block (({{ server_pool.name }})).
+  block:
 
-- name: Print out the GLB VS Pools REST API endpoint ({{ fad_glb_vs_pools_name }}).
-  ansible.builtin.debug:
-    msg: "This FAD GLB VS Pools REST API endpoint: {{ fad_api_endpoint_glb_vs_pools }}"
-  tags:
-    - fad_glb_vsp
-    - debug
+    - name: Set FAD GLB VS Pools REST API endpoint vars ({{ server_pool.name }}).
+      ansible.builtin.set_fact:
+        fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool?vdom={{ fad_vdom }}&mkey={{ server_pool.name }}
+        fad_glb_vs_pools_name: "{{ server_pool.name }}"
 
-- name: Get the existing value of GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
-  ansible.builtin.uri:
-    method: GET
-    url: "{{ fad_api_endpoint_glb_vs_pools }}"
-    body_format: "{{ fad_api_uri_params.body_format }}"
-    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
-    return_content: "{{ fad_api_uri_params.return_content }}"
-    status_code: "{{ fad_api_uri_params.status_code }}"
-    headers: "{{ fad_api_header }}"
-  register: fad_glb_servers_existing_data
-  delegate_to: localhost
-  tags:
-    - fad_glb_vsp
+    - name: Print out the GLB VS Pools REST API endpoint ({{ fad_glb_vs_pools_name }}).
+      ansible.builtin.debug:
+        msg: "This FAD GLB VS Pools REST API endpoint: {{ fad_api_endpoint_glb_vs_pools }}"
+      tags:
+        - debug
 
-- name: Print the existing value of GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
-  ansible.builtin.debug:
-    var: fad_glb_servers_existing_data.json.payload
-  delegate_to: localhost
+    - name: Get the existing value of GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
+      ansible.builtin.uri:
+        method: GET
+        url: "{{ fad_api_endpoint_glb_vs_pools }}"
+        body_format: "{{ fad_api_uri_params.body_format }}"
+        validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+        return_content: "{{ fad_api_uri_params.return_content }}"
+        status_code: "{{ fad_api_uri_params.status_code }}"
+        headers: "{{ fad_api_header }}"
+      register: fad_glb_servers_existing_data
+      delegate_to: localhost
+
+    - name: Print the existing value of GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
+      ansible.builtin.debug:
+        var: fad_glb_servers_existing_data.json.payload
+      delegate_to: localhost
+      tags:
+        - debug
   tags:
     - fad_glb_vsp
-    - debug
 
 # - name: Write GLB VS Pools request body json tmp file ({{ fad_glb_vs_pools_name }}).
 #   ansible.builtin.copy:
