@@ -35,3 +35,19 @@ fad_glb_data_centers:
           - name: waf1.dmz.dc2.ndkprd.com
             ip: 10.20.10.10
             health_check_inherit: enable
+
+fad_glb_vs_pools:
+  - name: public-waf.dc1.ndkprd.com # VS Pools mkey
+    check_server_status: enable # healthcheck
+    check_virtual_server_existent: enable
+    load_balance_method: wrr
+    vs_pool_members:
+      - id: 1001 # high number of ID for mkey
+        is_backup: disable # if enable, when healthcheck failed it will goes to this server
+        server: dmz.dc1.ndkprd.com # GLB Servers
+        server_member_name: public-waf-1.dc1.ndkprd.com # GLB Servers member
+        weight: 100
+      - id: 1002
+        is_backup: disable
+        server:  dmz.dc1.ndkprd.com
+        server_member_name: public-waf-2.dc1.ndkprd.com
