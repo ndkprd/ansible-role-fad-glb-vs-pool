@@ -1,5 +1,4 @@
-- name: Create/update data center using role ({{ data_center.name }}).
-  ansible.builtin.include_role: ndkprd.fortiadc-glb-data-center
+
 
 - name: Include add GLB server task ({{ data_center.name }}).
   ansible.builtin.include_tasks:  add_glb_servers.yaml
