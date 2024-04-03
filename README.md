@@ -96,6 +96,8 @@ For easier entry management in variable, I'm using recursive loop. It basically 
 
 I also haven't tested behaviour of the Servers tasks if using anything other than Generic Hosts, like FortiADC SLBs since I'm mainly using FortiADC for GLB only.
 
+Developed and tested against FortiADC 7.0.
+
 ## License
 
 MIT, use at your own risk.
