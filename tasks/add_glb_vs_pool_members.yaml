@@ -1,10 +1,10 @@
-- name: Create/update GLB VS Pool Members tasks block (({{ server_pool_member.name }})).
+- name: Create/update GLB VS Pool Members tasks block (({{ vs_pool_member.name }})).
   block:
 
-    - name: Set FAD GLB VS Pool Members REST API endpoint vars ({{ server_pool_member.name }}).
+    - name: Set FAD GLB VS Pool Members REST API endpoint vars ({{ vs_pool_member.name }}).
       ansible.builtin.set_fact:
-        fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool_member?vdom={{ fad_vdom }}&mkey={{ server_pool_member.name }}
-        fad_glb_vs_pool_members_name: "{{ server_pool_member.name }}"
+        fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_vs_pool_member?vdom={{ fad_vdom }}&mkey={{ vs_pool_member.name }}
+        fad_glb_vs_pool_members_name: "{{ vs_pool_member.name }}"
 
     - name: Print out the GLB VS Pool Members REST API endpoint ({{ fad_glb_vs_pool_members_name }}).
       ansible.builtin.debug:
@@ -37,16 +37,16 @@
           {
             "alternate": "",
             "alternate-cmr": "",
-            "check-server-status": "{{ server_pool_member.check_server_status }}",
-            "check-virtual-server-existent": "{{ server_pool_member.check_virtual_server_existent }}",
-            "load-balance-method": "{{ server_pool_member.load_balance_method }}",
-            "mkey": "{{ server_pool_member.name }}",
+            "check-server-status": "{{ vs_pool_member.check_server_status }}",
+            "check-virtual-server-existent": "{{ vs_pool_member.check_virtual_server_existent }}",
+            "load-balance-method": "{{ vs_pool_member.load_balance_method }}",
+            "mkey": "{{ vs_pool_member.name }}",
             "preferred": "",
             "preferred-cmr": "",
             "vs_pool_member": "",
             "vs_pool_member_count": ""
           }
-        dest: "/tmp/fad_glb_vs_pool_members_{{ server_pool_member.name }}_request_body.json"
+        dest: "/tmp/fad_glb_vs_pool_members_{{ vs_pool_member.name }}_request_body.json"
         mode: u+rw,g-rw,o-rw
       register: request_body
       delegate_to: localhost
