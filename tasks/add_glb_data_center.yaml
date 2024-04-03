@@ -1,14 +1,14 @@
-- name: Set GLB DC REST API endpoint ({{ data_center.dc_name }}).
+- name: Set GLB DC REST API endpoint ({{ data_center.name }}).
   ansible.builtin.set_fact:
-    fad_api_endpoint_glb_dc: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ data_center.dc_name }}
+    fad_api_endpoint_glb_dc: https://{{ ansible_host }}/api/global_load_balance_data_center?vdom={{ fad_vdom }}&mkey={{ data_center.name }}
 
-- name: Print out the GLB DC REST API endpoint ({{ data_center.dc_name }}).
+- name: Print out the GLB DC REST API endpoint ({{ data_center.name }}).
   ansible.builtin.debug:
     msg: "This FAD GLB DC REST API endpoint: {{ fad_api_endpoint_glb_dc }}"
   tags:
     - debug
 
-- name: Get the existing value of data center entry ({{ data_center.dc_name }}).
+- name: Get the existing value of data center entry ({{ data_center.name }}).
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_glb_dc }}"
@@ -20,27 +20,27 @@
   register: fad_glb_dc_existing_data
   delegate_to: localhost
 
-- name: Print the existing value of data center entry ({{ data_center.dc_name }}).
+- name: Print the existing value of data center entry ({{ data_center.name }}).
   ansible.builtin.debug:
     var: fad_glb_dc_existing_data.json.payload
   delegate_to: localhost
   tags:
     - debug
 
-- name: Write request body json tmp file ({{ data_center.dc_name }}).
+- name: Write request body json tmp file ({{ data_center.name }}).
   ansible.builtin.copy:
     content: |
       {
-        "mkey": "{{ data_center.dc_name }}",
+        "mkey": "{{ data_center.name }}",
         "location": "{{ data_center.location }}"
       }
-    dest: "/tmp/fad_glb_dc_{{ data_center.dc_name }}_request_body.json"
+    dest: "/tmp/fad_glb_dc_{{ data_center.name }}_request_body.json"
     mode: u+rw,g-rw,o-rw
   register: request_body
   delegate_to: localhost
   run_once: true
 
-- name: Trying to create new data center entry ({{ data_center.dc_name }}).
+- name: Trying to create new data center entry ({{ data_center.name }}).
   ansible.builtin.uri:
     method: POST
     url: "{{ fad_api_endpoint_glb_dc }}"
@@ -55,7 +55,7 @@
   changed_when: "fad_glb_dc_post_result.json.payload == 0"
   failed_when: "fad_glb_dc_post_result.json.payload != -15 and fad_glb_dc_post_result.json.payload != 0"
 
-- name: Update the data center entry if entry exist ({{ data_center.dc_name }}).
+- name: Update the data center entry if entry exist ({{ data_center.name }}).
   ansible.builtin.uri:
     method: PUT
     url: "{{ fad_api_endpoint_glb_dc }}"
@@ -70,7 +70,7 @@
   when: "fad_glb_dc_post_result.json == -15"
   failed_when: "fad_glb_dc_put_result.json.payload != -15 and fad_glb_dc_put_result.json.payload != 0"
 
-- name: Check if the data center value has changed ({{ data_center.dc_name }}).
+- name: Check if the data center value has changed ({{ data_center.name }}).
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_glb_dc }}"
@@ -83,14 +83,14 @@
   changed_when: "fad_glb_dc_new_data.json.payload != fad_glb_dc_existing_data.json.payload"
   delegate_to: localhost
 
-- name: Print the existing value of data center entry ({{ data_center.dc_name }}).
+- name: Print the existing value of data center entry ({{ data_center.name }}).
   ansible.builtin.debug:
     var: fad_glb_dc_new_data.json
   delegate_to: localhost
   tags:
     - debug
 
-- name: Include add GLB server task ({{ data_center.dc_name }}).
+- name: Include add GLB server task ({{ data_center.name }}).
   ansible.builtin.include_tasks:  add_glb_servers.yaml
   loop: "{{ data_center.glb_servers }}"
   loop_control:
