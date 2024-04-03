@@ -3,13 +3,13 @@
     fad_api_endpoint_server_members: https://{{ ansible_host }}/api/global_load_balance_servers_child_virtual_server_list?vdom={{ fad_vdom }}&pkey={{ glb_server.name }}&mkey={{ server_member.name }}
     fad_glb_servers_member_name: "{{ data_center.name }}/{{ glb_server.name }}/{{ server_member.name }}"
 
-- name: Print out the GLB Servers member REST API endpoint ({{ server_member.name }}).
+- name: Print out the GLB Servers member REST API endpoint ({{ fad_glb_servers_member_name }}).
   ansible.builtin.debug:
     msg: "This FAD GLB servers member REST API endpoint: {{ fad_api_endpoint_server_members }}"
   tags:
     - debug
 
-- name: Get the existing value of GLB Servers member entry ({{ server_member.name }}).
+- name: Get the existing value of GLB Servers member entry ({{ fad_glb_servers_member_name }}).
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_server_members }}"
@@ -21,14 +21,14 @@
   register: fad_server_members_existing_data
   delegate_to: localhost
 
-- name: Print the existing value of GLB Servers entry ({{ server_member.name }}).
+- name: Print the existing value of GLB Servers entry ({{ fad_glb_servers_member_name }}).
   ansible.builtin.debug:
     var: fad_server_members_existing_data.json.payload
   delegate_to: localhost
   tags:
     - debug
 
-- name: Write GLB Servers member request body json tmp file ({{ server_member.name }}).
+- name: Write GLB Servers member request body json tmp file ({{ fad_glb_servers_member_name }}).
   ansible.builtin.copy:
     content: |
       {
@@ -48,7 +48,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: Trying to create new GLB Servers member entry ({{ server_member.name }}).
+- name: Trying to create new GLB Servers member entry ({{ fad_glb_servers_member_name }}).
   ansible.builtin.uri:
     method: POST
     url: "{{ fad_api_endpoint_server_members }}"
@@ -63,7 +63,7 @@
   changed_when: "fad_server_members_post_result.json.payload == 0"
   failed_when: "fad_server_members_post_result.json.payload != -15 and fad_server_members_post_result.json.payload != 0"
 
-- name: Update the data center entry if entry exist ({{ server_member.name }}).
+- name: Update the data center entry if entry exist ({{ fad_glb_servers_member_name }}).
   ansible.builtin.uri:
     method: PUT
     url: "{{ fad_api_endpoint_server_members }}"
@@ -84,7 +84,7 @@
 #   loop_control:
 #     loop_var: server_member
 
-- name: Check if the FAD GLB Servers member values has changed ({{ server_member.name }}).
+- name: Check if the FAD GLB Servers member values has changed ({{ fad_glb_servers_member_name }}).
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_server_members }}"
@@ -97,7 +97,7 @@
   changed_when: "fad_server_members_new_data.json.payload != fad_server_members_existing_data.json.payload"
   delegate_to: localhost
 
-- name: Print the existing value of data center entry ({{ server_member.name }}).
+- name: Print the existing value of data center entry ({{ fad_glb_servers_member_name }}).
   ansible.builtin.debug:
     var: fad_server_members_new_data.json
   delegate_to: localhost
