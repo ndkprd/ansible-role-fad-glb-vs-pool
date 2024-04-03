@@ -83,7 +83,7 @@
       failed_when: "fad_glb_vs_pools_put_result.json.payload != -15 and fad_glb_vs_pools_put_result.json.payload != 0"
 
     - name: Include the FAD GLB VS Pools member task ({{ fad_glb_vs_pools_name }}).
-      ansible.builtin.include_tasks: add_glb_servers_members.yaml
+      ansible.builtin.include_tasks: add_glb_vs_pool_members.yaml
       loop: "{{ server_pool.vs_pool_members }}"
       loop_control:
         loop_var: vs_pool_member
