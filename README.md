@@ -11,7 +11,7 @@ Despite the name, because of the layered nature, it actually manage the followin
 - Virtual Server Pool (GLB -> FQDN -> Virtual Server Pool);
 - The child/members of Virtual Server Pool.
 
-Probably will refactor this into 3 different roles int the future.
+Probably will refactor this into different roles int the future.
 
 ## Usage
 
