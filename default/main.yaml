@@ -6,7 +6,7 @@ fad_glb_data_centers:
     glb_servers:
       - name: "dmz.dc1.ndkprd.com" # GLB servers mkey
         health_check_ctrl: enable # "enable" or "disable"
-        health_check_list: LB_HLTHCK_ICMP # must exists
+        health_check_list: LB_HLTHCK_ICMP # must exists first
         health_check_relationship: AND # either "AND" or "OR"
         server_type: Generic-Host # "Generic-Host" or "FortiADC-SLB"
         auth_type: none # check FortiADC docs

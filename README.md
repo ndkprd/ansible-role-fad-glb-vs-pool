@@ -1,24 +1,39 @@
-# ansible-role-fortiadc-glb
+# ansible-role-fortiadc-glb-vsp
 
 ## Description
 
 Ansible role to create/update Fortinet's FortiADC GLB Virtual Server Pool.
 
-Despite the name, because of the layered nature, it actually manage the following:
-- Data Center (GLB -> Global Object -> Data Center);
-- Servers (GLB -> Global Object -> Server );
-- The child/members of Servers;
-- Virtual Server Pool (GLB -> FQDN -> Virtual Server Pool);
-- The child/members of Virtual Server Pool.
-
-Probably will refactor this into different roles int the future.
+Since VSP need GLB Servers, it needs my other role, [ndkprd.fortiadc-glb-servers](https://github.com/ndkprd/ansible-role-fortiadc-glb-servers), which in turn also need another role I made: [ndkprd.fortiadc-glb-data-center](https://github.com/ndkprd/ansible-role-fortiadc-glb-data-center).
 
 ## Usage
 
 ### Install Role
 
+#### From Galaxy
+
 ```
 ansible-galaxy install ndkprd.fortiadc-glb-vsp
+```
+
+#### From Github
+
+##### Create Requirements File
+
+```
+---
+# ./requirements.yaml
+
+- name: ndkprd.fortiadc-glb-servers
+  scm: git
+  src: https://github.com/ndkprd/ansible-role-fortiadc-glb-vsp
+  version: main
+```
+
+##### Install
+
+```
+ansible-galaxy install -r requirements.yaml
 ```
 
 ### Hosts Example
@@ -91,10 +106,6 @@ fad_glb_data_centers:
 ```
 
 ## Limitation
-
-For easier entry management in variable, I'm using recursive loop. It basically loop the Data Center -> Servers -> Servers member and VSP -> VSP members for each arrays. Probably a bad practice.
-
-I also haven't tested behaviour of the Servers tasks if using anything other than Generic Hosts, like FortiADC SLBs since I'm mainly using FortiADC for GLB only.
 
 Developed and tested against FortiADC 7.0.
 

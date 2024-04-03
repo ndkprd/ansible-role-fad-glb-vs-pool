@@ -1,7 +1,0 @@
-
-
-- name: Include add GLB server task ({{ data_center.name }}).
-  ansible.builtin.include_tasks:  add_glb_servers.yaml
-  loop: "{{ data_center.glb_servers }}"
-  loop_control:
-    loop_var: glb_server
