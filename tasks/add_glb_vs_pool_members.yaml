@@ -43,7 +43,7 @@
     fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
     fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
     fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
-    fad_glb_vs_pool_member_existing_data.json.payload.['weight'] != vs_pool_member.weight
+    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight
   block:
 
     - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
