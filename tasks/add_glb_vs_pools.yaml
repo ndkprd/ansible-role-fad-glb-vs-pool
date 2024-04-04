@@ -102,6 +102,7 @@
     loop_var: vs_pool_member
   tags:
     - fad_glb_vs_pools
+    - fad_glb_vs_pool_members
 
 - name: Check if the FAD GLB VS Pools value has changed ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.uri:
