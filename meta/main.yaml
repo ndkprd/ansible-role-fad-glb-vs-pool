@@ -9,11 +9,9 @@ galaxy_info:
   min_ansible_version: '2.12'
 
   platforms:
-    - name: "RHEL/CentOS"
+    - name: Fedora
       versions:
-        - '7'
-        - '8'
-        - '9'
+        - 'all'
 
   galaxy_tags:
     - fortiadc
