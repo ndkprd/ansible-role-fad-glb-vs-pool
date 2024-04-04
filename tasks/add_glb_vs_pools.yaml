@@ -105,8 +105,8 @@
 
 - name: Check if the FAD GLB VS Pools value has changed ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.uri:
-     method: GET
-     url: "{{ fad_api_endpoint_glb_vs_pools }}"
+    method: GET
+    url: "{{ fad_api_endpoint_glb_vs_pools }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
