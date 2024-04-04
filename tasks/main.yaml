@@ -10,4 +10,4 @@
   loop_control:
     loop_var: vs_pool
   tags:
-    - fad_glb_vsp
+    - fad_glb_vs_pools
