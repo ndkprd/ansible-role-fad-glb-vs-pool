@@ -37,7 +37,7 @@
 - name: Create VS Pool Members tasks block if entry not exists yet.
   tags:
     - fad_glb_vs_pool_members
-  when: fad_glb_vs_pool_member_existing_data.json.payload is not defined
+  when: fad_glb_vs_pool_member_existing_data.json.payload.mkey is not defined
   block:
 
     - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
