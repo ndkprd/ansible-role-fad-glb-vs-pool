@@ -3,13 +3,13 @@
     fad_api_endpoint_glb_vs_pool_members: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool_child_member?vdom={{ fad_vdom }}&pkey={{ vs_pool.name }}&mkey={{ vs_pool_member.id }}
     fad_glb_vs_pool_member_name: "{{ vs_pool.name }}/{{ vs_pool_member.server_member_name }}"
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
 
 - name: Print out the GLB VS Pool Members REST API endpoint ({{ fad_glb_vs_pool_member_name }}).
   ansible.builtin.debug:
     msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pool_members }}"
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
     - debug
 
 - name: Get the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
@@ -24,27 +24,20 @@
   register: fad_glb_vs_pool_member_existing_data
   delegate_to: localhost
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
 
 - name: Print the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
   ansible.builtin.debug:
     var: fad_glb_vs_pool_member_existing_data.json.payload
   delegate_to: localhost
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
     - debug
 
-- name: Create/update GLB VS Pool Members tasks block (({{ vs_pool_member.server_member_name }})).
+- name: Create VS Pool Members tasks block if entry not exists yet.
   tags:
-    - fad_glb_vsp_pool_members
-  when: >
-    fad_glb_vs_pool_member_existing_data.json.payload == "" or
-    fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
-    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id or
-    fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
-    fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
-    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
-    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight
+    - fad_glb_vs_pool_members
+  when: fad_glb_vs_pool_member_existing_data.json.payload == ""
   block:
 
     - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
@@ -80,6 +73,37 @@
       changed_when: "fad_glb_vs_pool_member_post_result.json.payload == 0"
       failed_when: "fad_glb_vs_pool_member_post_result.json.payload != -15 and fad_glb_vs_pool_member_post_result.json.payload != 0"
 
+
+- name: Update GLB VS Pool Members tasks block if idempotent check failed.
+  tags:
+    - fad_glb_vs_pool_members
+  when: >
+    fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
+    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id or
+    fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
+    fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
+    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
+    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight
+  block:
+
+    - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
+      ansible.builtin.copy:
+        content: |
+          {
+            "backup": "{{ vs_pool_member.backup }}",
+            "mkey": "{{ vs_pool_member.id }}",
+            "server": "{{ vs_pool_member.server }}",
+            "server-member-name": "{{ vs_pool_member.server_member_name }}",
+            "ttl": "{{ vs_pool_member.ttl }}",
+            "weight": "{{ vs_pool_member.weight }}"
+          }
+
+        dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
+        mode: u+rw,g-rw,o-rw
+      register: request_body
+      delegate_to: localhost
+      run_once: true
+
     - name: Update the GLB VS Pool Members entry if entry exist ({{ fad_glb_vs_pool_member_name }}).
       ansible.builtin.uri:
         method: PUT
@@ -108,12 +132,12 @@
   changed_when: "fad_glb_vs_pool_member_new_data.json.payload != fad_glb_vs_pool_member_existing_data.json.payload"
   delegate_to: localhost
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
 
 - name: Print the existing value of the GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
   ansible.builtin.debug:
     var: fad_glb_vs_pool_member_new_data.json
   delegate_to: localhost
   tags:
-    - fad_glb_vsp_pool_members
+    - fad_glb_vs_pool_members
     - debug
