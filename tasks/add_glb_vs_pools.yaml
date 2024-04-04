@@ -34,9 +34,9 @@
     - fad_glb_vs_pools
     - debug
 
-- name: Create/update GLB VS Pools tasks block (({{ vs_pool.name }})).
+- name: Create/update GLB VS Pools if the idempotent check fail.
   tags:
-    - fad_glb_vsp
+    - fad_glb_vs_pools
   when: >
     fad_glb_vs_pools_existing_data.json.payload['check-server-status'] != vs_pool.check_server_status or
     fad_glb_vs_pools_existing_data.json.payload['check-virtual-server-existent'] != vs_pool.check_virtual_server_existent or
@@ -101,7 +101,7 @@
   loop_control:
     loop_var: vs_pool_member
   tags:
-    - fad_glb_vsp
+    - fad_glb_vs_pools
 
 - name: Check if the FAD GLB VS Pools value has changed ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.uri:
@@ -116,12 +116,12 @@
   changed_when: "fad_glb_vs_pools_new_data.json.payload != fad_glb_vs_pools_existing_data.json.payload"
   delegate_to: localhost
   tags:
-    - fad_glb_vsp
+    - fad_glb_vs_pools
 
 - name: Print the existing value of the GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.debug:
     var: fad_glb_vs_pools_new_data.json
   delegate_to: localhost
   tags:
-    - fad_glb_vsp
+    - fad_glb_vs_pools
     - debug
