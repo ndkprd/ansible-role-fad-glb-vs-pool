@@ -1,13 +1,13 @@
 - name: Set FAD GLB VS Pool Members REST API endpoint vars ({{ vs_pool_member.server_member_name }}).
   ansible.builtin.set_fact:
-    fad_api_endpoint_glb_vs_pools: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool_child_member?vdom={{ fad_vdom }}&pkey={{ vs_pool.name }}&mkey={{ vs_pool_member.id }}
+    fad_api_endpoint_glb_vs_pool_members: https://{{ ansible_host }}/api/global_load_balance_virtual_server_pool_child_member?vdom={{ fad_vdom }}&pkey={{ vs_pool.name }}&mkey={{ vs_pool_member.id }}
     fad_glb_vs_pool_members_name: "{{ vs_pool.name }}/{{ vs_pool_member.server_member_name }}"
   tags:
     - fad_glb_vsp_pool_members
 
 - name: Print out the GLB VS Pool Members REST API endpoint ({{ fad_glb_vs_pool_members_name }}).
   ansible.builtin.debug:
-    msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pools }}"
+    msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pool_members }}"
   tags:
     - fad_glb_vsp_pool_members
     - debug
@@ -15,7 +15,7 @@
 - name: Get the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_members_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoint_glb_vs_pools }}"
+    url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
@@ -67,7 +67,7 @@
     - name: Trying to create new GLB VS Pool Members entry ({{ fad_glb_vs_pool_members_name }}).
       ansible.builtin.uri:
         method: POST
-        url: "{{ fad_api_endpoint_glb_vs_pools }}"
+        url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
         body_format: "{{ fad_api_uri_params.body_format }}"
         validate_certs: "{{ fad_api_uri_params.validate_certs }}"
         return_content: "{{ fad_api_uri_params.return_content }}"
@@ -82,7 +82,7 @@
     - name: Update the GLB VS Pool Members entry if entry exist ({{ fad_glb_vs_pool_members_name }}).
       ansible.builtin.uri:
         method: PUT
-        url: "{{ fad_api_endpoint_glb_vs_pools }}"
+        url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
         body_format: "{{ fad_api_uri_params.body_format }}"
         validate_certs: "{{ fad_api_uri_params.validate_certs }}"
         return_content: "{{ fad_api_uri_params.return_content }}"
@@ -97,7 +97,7 @@
 - name: Check if the FAD GLB VS Pool Members value has changed ({{ fad_glb_vs_pool_members_name }}).
   ansible.builtin.uri:
     method: GET
-    url: "{{ fad_api_endpoint_glb_vs_pools }}"
+    url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
     body_format: "{{ fad_api_uri_params.body_format }}"
     validate_certs: "{{ fad_api_uri_params.validate_certs }}"
     return_content: "{{ fad_api_uri_params.return_content }}"
