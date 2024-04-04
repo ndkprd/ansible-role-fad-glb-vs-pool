@@ -94,9 +94,6 @@
       when: "fad_glb_vs_pool_members_post_result.json.payload == -15"
       failed_when: "fad_glb_vs_pool_members_put_result.json.payload != -15 and fad_glb_vs_pool_members_put_result.json.payload != 0"
 
-  tags:
-    - fad_glb_vsp_members
-
 - name: Check if the FAD GLB VS Pool Members value has changed ({{ fad_glb_vs_pool_members_name }}).
   ansible.builtin.uri:
     method: GET
