@@ -81,7 +81,6 @@
   when: >
     (fad_glb_vs_pool_member_existing_data.json.payload['mkey'] is defined) and
     (fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
-    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id or
     fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
     fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
     fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
