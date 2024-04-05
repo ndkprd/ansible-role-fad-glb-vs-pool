@@ -174,8 +174,8 @@ For example, if you're using CLI, you can just go `ansible-playbook playbook.yam
 
 As mentioned above, this role recursively depends on my two other FortiADC GLB role: one for GLB Data Center, other for GLB Servers and its members. You can use/skip them with the following tags:
 
-- ndkprd.fortiadc-glb-data-center -> `fad-glb-dc`
-- ndkprd.fortiadc-glb-servers -> `fad-glb-servers` and `fad-glb-servers-members`
+- ndkprd.fortiadc-glb-data-center -> `fad_glb_dc`
+- ndkprd.fortiadc-glb-servers -> `fad_glb_servers` and `fad_glb_servers_members`
 
 ## Limitation
 
