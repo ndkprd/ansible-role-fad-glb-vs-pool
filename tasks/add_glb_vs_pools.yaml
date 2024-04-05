@@ -54,6 +54,8 @@
   register: request_body
   delegate_to: localhost
   run_once: true
+  tags:
+    - fad_glb_vs_pools
 
 - name: Trying to create new GLB VS Pools entry ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.uri:
@@ -70,6 +72,8 @@
   when: fad_glb_vs_pools_existing_data.json.payload.mkey is undefined
   changed_when: "fad_glb_vs_pools_post_result.json.payload == 0"
   failed_when: "fad_glb_vs_pools_post_result.json.payload != -15 and fad_glb_vs_pools_post_result.json.payload != 0"
+  tags:
+    - fad_glb_vs_pools
 
 - name: Update the GLB VS Pools entry if entry exist ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.uri:
@@ -89,6 +93,8 @@
     fad_glb_vs_pools_existing_data.json.payload['check-virtual-server-existent'] != vs_pool.check_virtual_server_existent or
     fad_glb_vs_pools_existing_data.json.payload['load-balance-method'] != vs_pool.load_balance_method)
   failed_when: "fad_glb_vs_pools_put_result.json.payload != -15 and fad_glb_vs_pools_put_result.json.payload != 0"
+  tags:
+    - fad_glb_vs_pools
 
 - name: Include the FAD GLB VS Pools member task ({{ fad_glb_vs_pools_name }}).
   ansible.builtin.include_tasks: add_glb_vs_pool_members.yaml
