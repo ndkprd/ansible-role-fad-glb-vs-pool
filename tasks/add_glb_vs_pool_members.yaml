@@ -9,7 +9,7 @@
   ansible.builtin.debug:
     msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pool_members }}"
   tags:
-    - fad_glb_vs_pool_members
+    - fad_glb_vs_pool_membersnan
     - debug
 
 - name: Get the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
@@ -48,14 +48,14 @@
     dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
     mode: u+rw,g-rw,o-rw
   register: request_body
-  when: >
-    (fad_glb_vs_pool_member_existing_data.json.payload['mkey'] is undefined) OR
-    (fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup OR
-    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id OR
-    fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server OR
-    fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name OR
-    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl OR
-    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight)
+  # when: >
+  #   (fad_glb_vs_pool_member_existing_data.json.payload['mkey'] is undefined) OR
+  #   (fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup OR
+  #   fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id OR
+  #   fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server OR
+  #   fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name OR
+  #   fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl OR
+  #   fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight)
   delegate_to: localhost
   run_once: true
 
