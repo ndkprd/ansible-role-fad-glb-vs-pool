@@ -50,40 +50,101 @@ fad2.ndkprd.com fad_apitoken=mysupersecrettoken
 fad_vdom: root
 
 fad_glb_data_centers:
-  - name: dc1.ndkprd.com # Data Center name
-    location: ID # 2 letters country ID
-    glb_servers:
-      - name: "dmz.dc1.ndkprd.com" # GLB servers mkey
-        health_check_ctrl: enable # "enable" or "disable"
-        health_check_list: LB_HLTHCK_ICMP # must exists
-        health_check_relationship: AND # either "AND" or "OR"
-        server_type: Generic-Host # "Generic-Host" or "FortiADC-SLB"
-        auth_type: none # check FortiADC docs
-        auto_sync: disable # "enable" only when server_type: FortiADC-SLB
-        fad_ip: 0.0.0.0 # FortiADC IP if using server_type: FortiADC-SLB
-        fad_pass: "" # FortiADC admin pass if using server_type: FortiADC-SLB
-        fad_port: 5858 # FortiADC sync port if using server_type: FortiADC-SLB
-        server_members:
-          - name: waf1.dmz.dc1.ndkprd.com # GLB servers child mkey
-            ip: 10.10.10.10 # GLB servers IP address
-            health_check_inherit: enable # I just enable inherit to reduce headache
+  - name: hq.ndkprd.com  # Data Center name/mkey
+    location: ID  # 2 letters country ID
+  - name: dc1.ndkprd.com    
+    location: ID     
   - name: dc2.ndkprd.com
     location: ID
-    glb_servers:
-      - name: "dmz.dc2.ndkprd.com"
-        health_check_ctrl: enable
-        health_check_list: LB_HLTHCK_ICMP
-        health_check_relationship: AND
-        server_type: Generic-Host
-        auth_type: none
-        auto_sync: disable
-        fad_ip: 0.0.0.0
-        fad_pass: ""
-        fad_port: 5858
-        server_members:
-          - name: waf1.dmz.dc2.ndkprd.com
-            ip: 10.20.10.10
-            health_check_inherit: enable
+
+fad_glb_servers:
+  - name: "dmz.hq.ndkprd.com" # GLB Server name/mkey
+    data_center: "hq.ndkprd.com" # Data Center name, must exists first
+    health_check_ctrl: enable
+    health_check_list: "LB_HLTHCK_ICMP " # the whitespace is a must
+    health_check_relationship: AND      
+    server_type: Generic-Host # "Generic-Host" or "FortiADC-SLB"
+    auth_type: none # Only for FortiADC-SLB
+    address_type: ipv4 # FAD address type
+    auto_sync: disable # Only for FortiADC-SLB
+    fad_ipv4: "0.0.0.0" # Only for FortiADC-SLB
+    fad_ipv6: "::" # Only for FortiADC-SLB
+    fad_pass: "" # Only for FortiADC-SLB
+    fad_port: "5858" # Only for FortiADC-SLB
+    server_members: []
+
+  - name: "dmz.dc1.ndkprd.com"
+    data_center: "dc1.ndkprd.com"
+    health_check_ctrl: enable
+    health_check_list: "LB_HLTHCK_ICMP "
+    health_check_relationship: AND
+    server_type: Generic-Host
+    auth_type: none
+    address_type: ipv4 # FAD address type
+    auto_sync: disable
+    fad_ipv4: "0.0.0.0"
+    fad_ipv6: "::"
+    fad_pass: ""
+    fad_port: "5858"
+    server_members:
+      - name: public-waf-1.dmz.dc1.ndkprd.com
+        ipv4: 36.92.152.196
+        ipv6: "::"
+        address_type: ipv4
+        gateway: ""
+        health_check_ctrl: disable # default value
+        health_check_inherit: enable
+        health_check_list: ""
+        health_check_relationship: OR # default value
+      - name: public-waf-2.dmz.dc1.ndkprd.com
+        ipv4: 114.5.127.186
+        ipv6: "::"
+        address_type: ipv4
+        gateway: ""
+        health_check_ctrl: disable # default value
+        health_check_inherit: enable
+        health_check_list: ""
+        health_check_relationship: OR # default value
+
+  - name: "dmz.dc2.ndkprd.com"
+    data_center: "dc2.ndkprd.com"
+    health_check_ctrl: enable
+    health_check_list: "LB_HLTHCK_ICMP "
+    health_check_relationship: AND
+    server_type: Generic-Host
+    auth_type: none
+    address_type: ipv4 # FAD address type
+    auto_sync: disable
+    fad_ipv4: "0.0.0.0"
+    fad_ipv6: "::"
+    fad_pass: ""
+    fad_port: "5858"
+    server_members:
+      - name: public-waf-1.dmz.dc2.ndkprd.com
+        ipv4: 114.5.119.176
+        ipv6: "::"
+        address_type: ipv4
+        gateway: ""
+        health_check_ctrl: disable # default value
+        health_check_inherit: enable
+        health_check_list: ""
+        health_check_relationship: OR # default value
+
+fad_glb_vs_pools:
+  - name: public-waf.dc1.ndkprd.com # VS Pools mkey
+    check_server_status: enable # healthcheck
+    check_virtual_server_existent: enable
+    load_balance_method: wrr
+    vs_pool_members:
+      - id: 1001 # high number of ID for mkey
+        is_backup: disable # if enable, when healthcheck failed it will goes to this server
+        server: dmz.dc1.ndkprd.com # GLB Servers
+        server_member_name: public-waf-1.dc1.ndkprd.com # GLB Servers member
+        weight: 100
+      - id: 1002
+        is_backup: disable
+        server:  dmz.dc1.ndkprd.com
+        server_member_name: public-waf-2.dc1.ndkprd.com
 
 ```
 
