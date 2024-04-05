@@ -34,10 +34,16 @@
     - fad_glb_vs_pool_members
     - debug
 
-- name: Create VS Pool Members tasks block if entry not exists yet.
+- name: Create/update GLB VS Pool Members tasks block if idempotent check failed.
   tags:
     - fad_glb_vs_pool_members
-  when: fad_glb_vs_pool_member_existing_data.json.payload.mkey is not defined
+  when: >
+    fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
+    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id or
+    fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
+    fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
+    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
+    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight
   block:
 
     - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
@@ -71,36 +77,6 @@
       delegate_to: localhost
       changed_when: "fad_glb_vs_pool_member_post_result.json.payload == 0"
       failed_when: "fad_glb_vs_pool_member_post_result.json.payload != -15 and fad_glb_vs_pool_member_post_result.json.payload != 0"
-
-
-- name: Update GLB VS Pool Members tasks block if idempotent check failed.
-  tags:
-    - fad_glb_vs_pool_members
-  when: >
-    fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
-    fad_glb_vs_pool_member_existing_data.json.payload['mkey'] != vs_pool_member.id or
-    fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
-    fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
-    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
-    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight
-  block:
-
-    - name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
-      ansible.builtin.copy:
-        content: |
-          {
-            "backup": "{{ vs_pool_member.backup }}",
-            "mkey": "{{ vs_pool_member.id }}",
-            "server": "{{ vs_pool_member.server }}",
-            "server-member-name": "{{ vs_pool_member.server_member_name }}",
-            "ttl": "{{ vs_pool_member.ttl }}",
-            "weight": "{{ vs_pool_member.weight }}"
-          }
-        dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
-        mode: u+rw,g-rw,o-rw
-      register: request_body
-      delegate_to: localhost
-      run_once: true
 
     - name: Update the GLB VS Pool Members entry if entry exist ({{ fad_glb_vs_pool_member_name }}).
       ansible.builtin.uri:
