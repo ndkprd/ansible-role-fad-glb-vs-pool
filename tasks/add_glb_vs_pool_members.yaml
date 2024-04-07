@@ -5,14 +5,14 @@
   tags:
     - fad_glb_vs_pool_members
 
-- name: Print out the GLB VS Pool Members REST API endpoint ({{ fad_glb_vs_pool_member_name }}).
+- name: Print out the GLB VS Pool Members REST API endpoint for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.debug:
     msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pool_members }}"
   tags:
     - fad_glb_vs_pool_membersnan
     - debug
 
-- name: Get the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
+- name: Get the existing value of GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
@@ -26,7 +26,7 @@
   tags:
     - fad_glb_vs_pool_members
 
-- name: Print the existing value of GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
+- name: Print the existing value of GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.debug:
     var: fad_glb_vs_pool_member_existing_data.json.payload
   delegate_to: localhost
@@ -34,9 +34,26 @@
     - fad_glb_vs_pool_members
     - debug
 
-- name: Write GLB VS Pool Members request body json tmp file ({{ fad_glb_vs_pool_member_name }}).
-  ansible.builtin.copy:
-    content: |
+# - name: Write GLB VS Pool Members request body json tmp file for {{ fad_glb_vs_pool_member_name }}
+#   ansible.builtin.copy:
+#     content: |
+#       {
+#         "backup": "{{ vs_pool_member.backup }}",
+#         "mkey": "{{ vs_pool_member.id }}",
+#         "server": "{{ vs_pool_member.server }}",
+#         "server-member-name": "{{ vs_pool_member.server_member_name }}",
+#         "ttl": "{{ vs_pool_member.ttl }}",
+#         "weight": "{{ vs_pool_member.weight }}"
+#       }
+#     dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
+#     mode: u+rw,g-rw,o-rw
+#   register: request_body
+#   delegate_to: localhost
+#   run_once: true
+
+- name:  Write GLB VS Pool Member request body json for {{ fad_glb_vs_pool_member_name }}
+  ansible.builtin.set_fact:
+    request_body: |
       {
         "backup": "{{ vs_pool_member.backup }}",
         "mkey": "{{ vs_pool_member.id }}",
@@ -45,13 +62,17 @@
         "ttl": "{{ vs_pool_member.ttl }}",
         "weight": "{{ vs_pool_member.weight }}"
       }
-    dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
-    mode: u+rw,g-rw,o-rw
-  register: request_body
-  delegate_to: localhost
-  run_once: true
+  tags:
+    - fad_glb_vs_pools_members
 
-- name: Trying to create new GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
+- name: Print out the request_body json result for {{ fad_glb_vs_pool_member_name }}
+  ansible.builtin.debug:
+    var: request_body
+  tags:
+    - fad_glb_vs_pools_members
+    - debug
+
+- name: Trying to create new GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.uri:
     method: POST
     url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
@@ -60,14 +81,14 @@
     return_content: "{{ fad_api_uri_params.return_content }}"
     status_code: "{{ fad_api_uri_params.status_code }}"
     headers: "{{ fad_api_header }}"
-    body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
+    body: "{{ request_body }}"
   register: fad_glb_vs_pool_member_post_result
   delegate_to: localhost
   when: fad_glb_vs_pool_member_existing_data.json.payload.mkey is undefined
   changed_when: "fad_glb_vs_pool_member_post_result.json.payload == 0"
   failed_when: "fad_glb_vs_pool_member_post_result.json.payload != -15 and fad_glb_vs_pool_member_post_result.json.payload != 0"
 
-- name: Update the GLB VS Pool Members entry if entry exist ({{ fad_glb_vs_pool_member_name }}).
+- name: Update the GLB VS Pool Members entry if entry exist for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.uri:
     method: PUT
     url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
@@ -76,7 +97,7 @@
     return_content: "{{ fad_api_uri_params.return_content }}"
     status_code: "{{ fad_api_uri_params.status_code }}"
     headers: "{{ fad_api_header }}"
-    body: "{{ lookup('ansible.builtin.file', request_body.dest) }}"
+    body: "{{ request_body }}"
   register: fad_glb_vs_pool_member_put_result
   when: >
     (fad_glb_vs_pool_member_existing_data.json.payload['mkey'] is defined) and
@@ -88,7 +109,7 @@
   delegate_to: localhost
   failed_when: "fad_glb_vs_pool_member_put_result.json.payload != -15 and fad_glb_vs_pool_member_put_result.json.payload != 0"
 
-- name: Check if the FAD GLB VS Pool Members value has changed ({{ fad_glb_vs_pool_member_name }}).
+- name: Check if the FAD GLB VS Pool Members value has changed for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.uri:
     method: GET
     url: "{{ fad_api_endpoint_glb_vs_pool_members }}"
@@ -103,7 +124,7 @@
   tags:
     - fad_glb_vs_pool_members
 
-- name: Print the existing value of the GLB VS Pool Members entry ({{ fad_glb_vs_pool_member_name }}).
+- name: Print the existing value of the GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.debug:
     var: fad_glb_vs_pool_member_new_data.json
   delegate_to: localhost
