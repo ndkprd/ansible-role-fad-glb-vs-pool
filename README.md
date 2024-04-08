@@ -1,8 +1,8 @@
-# ansible-role-fortiadc-glb-vsp
+# ansible-role-fortiadc-glb-vs-pools
 
 ## Description
 
-Ansible role to create/update Fortinet's FortiADC GLB Virtual Server Pool.
+Ansible role to create/update Fortinet's FortiADC GLB Virtual Server Pools and its member.
 
 Since VSP need GLB Servers, it needs my other role, [ndkprd.fortiadc-glb-servers](https://github.com/ndkprd/ansible-role-fortiadc-glb-servers), which in turn also need another role I made: [ndkprd.fortiadc-glb-data-center](https://github.com/ndkprd/ansible-role-fortiadc-glb-data-center).
 
@@ -179,7 +179,7 @@ As mentioned above, this role recursively depends on my two other FortiADC GLB r
 
 ## Limitation
 
-Developed and tested against FortiADC 7.0.
+Developed against and only tested for FortiADC 7.0.
 
 ## License
 
