@@ -13,7 +13,7 @@ Since VSP need GLB Servers, it needs my other role, [ndkprd.fortiadc-glb-servers
 #### From Galaxy
 
 ```
-ansible-galaxy install ndkprd.fortiadc-glb-vsp
+ansible-galaxy install ndkprd.fortiadc-glb-vs-pools
 ```
 
 #### From Github
@@ -24,9 +24,9 @@ ansible-galaxy install ndkprd.fortiadc-glb-vsp
 ---
 # ./requirements.yaml
 
-- name: ndkprd.fortiadc-glb-servers
+- name: ndkprd.fortiadc-glb-vs-pools
   scm: git
-  src: https://github.com/ndkprd/ansible-role-fortiadc-glb-vsp
+  src: https://github.com/ndkprd/ansible-role-fortiadc-glb-vs-pools.git
   version: main
 ```
 
