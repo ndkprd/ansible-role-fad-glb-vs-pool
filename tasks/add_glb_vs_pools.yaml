@@ -144,6 +144,7 @@
   delegate_to: localhost
   tags:
     - fad_glb_vs_pools
+    - debug
 
 - name: Print the existing value of the GLB VS Pools entry for {{ fad_glb_vs_pools_name }}
   ansible.builtin.debug:

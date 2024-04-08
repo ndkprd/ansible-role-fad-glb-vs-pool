@@ -34,23 +34,6 @@
     - fad_glb_vs_pool_members
     - debug
 
-# - name: Write GLB VS Pool Members request body json tmp file for {{ fad_glb_vs_pool_member_name }}
-#   ansible.builtin.copy:
-#     content: |
-#       {
-#         "backup": "{{ vs_pool_member.backup }}",
-#         "mkey": "{{ vs_pool_member.id }}",
-#         "server": "{{ vs_pool_member.server }}",
-#         "server-member-name": "{{ vs_pool_member.server_member_name }}",
-#         "ttl": "{{ vs_pool_member.ttl }}",
-#         "weight": "{{ vs_pool_member.weight }}"
-#       }
-#     dest: "/tmp/fad_glb_vs_pool_member_{{ vs_pool_member.server_member_name }}_request_body.json"
-#     mode: u+rw,g-rw,o-rw
-#   register: request_body
-#   delegate_to: localhost
-#   run_once: true
-
 - name:  Write GLB VS Pool Member request body json for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.set_fact:
     request_body: |
@@ -123,6 +106,7 @@
   delegate_to: localhost
   tags:
     - fad_glb_vs_pool_members
+    - debug
 
 - name: Print the existing value of the GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
   ansible.builtin.debug:
