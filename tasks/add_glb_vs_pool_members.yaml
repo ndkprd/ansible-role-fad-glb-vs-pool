@@ -84,11 +84,13 @@
   register: fad_glb_vs_pool_member_put_result
   when: >
     (fad_glb_vs_pool_member_existing_data.json.payload['mkey'] is defined) and
-    (fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup or
+    (
+    fad_glb_vs_pool_member_existing_data.json.payload['backup'] != vs_pool_member.backup | default('disable') or
     fad_glb_vs_pool_member_existing_data.json.payload['server'] != vs_pool_member.server or
     fad_glb_vs_pool_member_existing_data.json.payload['server-member-name'] != vs_pool_member.server_member_name or
-    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl or
-    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight)
+    fad_glb_vs_pool_member_existing_data.json.payload['ttl'] != vs_pool_member.ttl | default('-1') | string or
+    fad_glb_vs_pool_member_existing_data.json.payload['weight'] != vs_pool_member.weight | default('1') | string
+    )
   delegate_to: localhost
   failed_when: "fad_glb_vs_pool_member_put_result.json.payload != -15 and fad_glb_vs_pool_member_put_result.json.payload != 0"
 
