@@ -39,7 +39,7 @@
     request_body: |
       {
         "backup": "{{ vs_pool_member.backup | default('disable') }}",
-        "mkey": "{{ vs_pool_member.id }}",
+        "mkey": "{{ vs_pool_member.id | string }}",
         "server": "{{ vs_pool_member.server }}",
         "server-member-name": "{{ vs_pool_member.server_member_name }}",
         "ttl": "{{ vs_pool_member.ttl | default('-1') | string }}",
