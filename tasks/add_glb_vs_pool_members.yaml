@@ -9,7 +9,7 @@
   ansible.builtin.debug:
     msg: "This FAD GLB VS Pool Members REST API endpoint: {{ fad_api_endpoint_glb_vs_pool_members }}"
   tags:
-    - fad_glb_vs_pool_membersnan
+    - fad_glb_vs_pool_members
     - debug
 
 - name: Get the existing value of GLB VS Pool Members entry for {{ fad_glb_vs_pool_member_name }}
@@ -38,12 +38,12 @@
   ansible.builtin.set_fact:
     request_body: |
       {
-        "backup": "{{ vs_pool_member.backup }}",
+        "backup": "{{ vs_pool_member.backup | default('disable') }}",
         "mkey": "{{ vs_pool_member.id }}",
         "server": "{{ vs_pool_member.server }}",
         "server-member-name": "{{ vs_pool_member.server_member_name }}",
-        "ttl": "{{ vs_pool_member.ttl }}",
-        "weight": "{{ vs_pool_member.weight }}"
+        "ttl": "{{ vs_pool_member.ttl | default('-1') | string }}",
+        "weight": "{{ vs_pool_member.weight | default('1') | string }}"
       }
   tags:
     - fad_glb_vs_pools_members
