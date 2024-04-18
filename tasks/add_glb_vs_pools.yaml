@@ -91,9 +91,9 @@
   delegate_to: localhost
   when: >
     (fad_glb_vs_pools_existing_data.json.payload['mkey'] is defined) and
-    (fad_glb_vs_pools_existing_data.json.payload['check-server-status'] != vs_pool.check_server_status or
-    fad_glb_vs_pools_existing_data.json.payload['check-virtual-server-existent'] != vs_pool.check_virtual_server_existent or
-    fad_glb_vs_pools_existing_data.json.payload['load-balance-method'] != vs_pool.load_balance_method)
+    (fad_glb_vs_pools_existing_data.json.payload['check-server-status'] | default('enable') != vs_pool.check_server_status or
+    fad_glb_vs_pools_existing_data.json.payload['check-virtual-server-existent'] | default('enable') != vs_pool.check_virtual_server_existent or
+    fad_glb_vs_pools_existing_data.json.payload['load-balance-method'] | default('wrr') != vs_pool.load_balance_method)
   failed_when: "fad_glb_vs_pools_put_result.json.payload != -15 and fad_glb_vs_pools_put_result.json.payload != 0"
   tags:
     - fad_glb_vs_pools
