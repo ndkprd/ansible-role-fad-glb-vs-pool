@@ -34,38 +34,15 @@
     - fad_glb_vs_pools
     - debug
 
-# - name: Write GLB VS Pools request body json tmp file for {{ fad_glb_vs_pools_name }}
-#   ansible.builtin.copy:
-#     content: |
-#       {
-#         "alternate": "",
-#         "alternate-cmr": "",
-#         "check-server-status": "{{ vs_pool.check_server_status }}",
-#         "check-virtual-server-existent": "{{ vs_pool.check_virtual_server_existent }}",
-#         "load-balance-method": "{{ vs_pool.load_balance_method }}",
-#         "mkey": "{{ vs_pool.name }}",
-#         "preferred": "",
-#         "preferred-cmr": "",
-#         "vs_pool_member": "",
-#         "vs_pool_member_count": ""
-#       }
-#     dest: "/tmp/fad_glb_vs_pools_{{ vs_pool.name }}_request_body.json"
-#     mode: u+rw,g-rw,o-rw
-#   register: request_body
-#   delegate_to: localhost
-#   run_once: true
-#   tags:
-#     - fad_glb_vs_pools
-
 - name: Write GLB VS Pool request body json for {{ fad_glb_vs_pools_name }}
   ansible.builtin.set_fact:
     request_body: |
       {
         "alternate": "",
         "alternate-cmr": "",
-        "check-server-status": "{{ vs_pool.check_server_status }}",
-        "check-virtual-server-existent": "{{ vs_pool.check_virtual_server_existent }}",
-        "load-balance-method": "{{ vs_pool.load_balance_method }}",
+        "check-server-status": "{{ vs_pool.check_server_status | default('enable') }}",
+        "check-virtual-server-existent": "{{ vs_pool.check_virtual_server_existent | default('enable') }}",
+        "load-balance-method": "{{ vs_pool.load_balance_method | default('wrr') }}",
         "mkey": "{{ vs_pool.name }}",
         "preferred": "",
         "preferred-cmr": "",
