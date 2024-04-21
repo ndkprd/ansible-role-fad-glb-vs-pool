@@ -70,9 +70,9 @@
 
   roles:
     # uncomment below to test against ansible-galaxy
-    # - ndkprd.fortiadc-glb-vs-pools
+    - ndkprd.fortiadc-glb-vs-pools
     # uncomment below to test against local (note: this will not pass ansible-lint)
-    - ../../ansible-role-fortiadc-glb-vs-pools
+    # - ../../ansible-role-fortiadc-glb-vs-pools
 
   # clean-up tasks if you need to delete the resources you just create.
   tasks:
