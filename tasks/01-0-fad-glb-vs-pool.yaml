@@ -75,7 +75,7 @@
     - fad_glb_vs_pool_members
   block:
     - name: Include the FAD GLB VS Pools member task for {{ fad_glb_vs_pool_name }}
-      ansible.builtin.include_tasks: 01-0-glb-vs-pool.yaml
+      ansible.builtin.include_tasks: 01-a-fad-glb-vs-pool-member.yaml
       loop: "{{ vs_pool.vs_pool_members }}"
       loop_control:
         loop_var: vs_pool_member

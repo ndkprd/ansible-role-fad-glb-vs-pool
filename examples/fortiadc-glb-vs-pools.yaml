@@ -32,7 +32,7 @@
         fad_pass: ""
         fad_port: "5858"
         server_members:
-          - name: public-waf-1.dmz.dc1.ndkprd.com
+          - name: public-waf-1.dc1.ndkprd.com
             ipv4: 10.10.1.2
             ipv6: "::"
             address_type: ipv4
@@ -41,7 +41,7 @@
             health_check_inherit: enable
             health_check_list: ""
             health_check_relationship: "OR"
-          - name: public-waf-2.dmz.dc1.ndkprd.com
+          - name: public-waf-2.dc1.ndkprd.com
             ipv4: 10.10.2.2
             ipv6: "::"
             address_type: ipv4
@@ -61,11 +61,12 @@
             is_backup: disable # if enable, when healthcheck failed it will goes to this server
             server: dmz.dc1.ndkprd.com # GLB Servers
             server_member_name: public-waf-1.dc1.ndkprd.com # GLB Servers member
-            weight: 100
+            weight: 10
           - id: 1002
             is_backup: disable
             server: dmz.dc1.ndkprd.com
             server_member_name: public-waf-2.dc1.ndkprd.com
+            weight: 10
 
   roles:
     # uncomment below to test against ansible-galaxy
