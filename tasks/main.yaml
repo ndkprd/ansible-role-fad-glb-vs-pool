@@ -1,9 +1,12 @@
 ---
 
-- name: Include task to create/update GLB VSP.
-  ansible.builtin.include_tasks: add_glb_vs_pools.yaml
-  loop: "{{ fad_glb_vs_pools }}"
-  loop_control:
-    loop_var: vs_pool
+- name: Include task to create/update GLB VSP
   tags:
     - fad_glb_vs_pools
+  block:
+    - name: Include task to create/update GLB VSP
+      ansible.builtin.include_tasks: 01-0-fad-glb-vs-pool.yaml
+      loop: "{{ fad_glb_vs_pools }}"
+      loop_control:
+        loop_var: vs_pool
+        label: "{{ vs_pool.name }}"
