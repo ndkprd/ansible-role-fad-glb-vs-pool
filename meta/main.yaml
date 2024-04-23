@@ -1,4 +1,8 @@
 ---
+
+dependencies:
+  - ndkprd.fortiadc-glb-servers
+
 galaxy_info:
   author: ndkprd
   role_name: fortiadc-glb-vs-pools
@@ -16,6 +20,3 @@ galaxy_info:
   galaxy_tags:
     - fortiadc
     - fortinet
-
-dependencies:
-  - ndkprd.fortiadc-glb-servers

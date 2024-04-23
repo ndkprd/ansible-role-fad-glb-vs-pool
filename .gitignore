@@ -1,3 +1,4 @@
 .vscode
 examples/hosts
 examples/requirements.yaml
+examples/group_vars/all.yaml
