@@ -1,0 +1,102 @@
+---
+
+- name: Print out the GLB VS Pool Member existing values.
+  ansible.builtin.debug:
+    msg: >
+      {{ (lookup('url', fad_glb_vs_pool_member_api_endpoint
+      % (vs_pool.0.name, vs_pool.1.id), validate_certs=false, split_lines=false,
+      headers=fad_api_header) | from_json).get('payload') }}
+  loop: "{{ fad_glb_vs_pools | subelements('vs_pool_members') }}"
+  loop_control:
+    loop_var: vs_pool
+    label: "{{ vs_pool.1.server_member_name + ' of ' + vs_pool.0.name }}"
+  tags: [debug]
+
+- name: Create new GLB VS Pool Member entry if it's not found.
+  ansible.builtin.uri:
+    method: POST
+    url: "{{ fad_glb_vs_pool_member_api_endpoint | format(vs_pool.0.name, vs_pool.1.id) }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
+    body: |
+      {
+        "backup": "{{ vs_pool.1.backup | default('disable') }}",
+        "mkey": "{{ vs_pool.1.id | string }}",
+        "server": "{{ vs_pool.1.server }}",
+        "server-member-name": "{{ vs_pool.1.server_member_name }}",
+        "ttl": "{{ vs_pool.1.ttl | default('-1') | string }}",
+        "weight": "{{ vs_pool.1.weight | default('1') | string }}"
+      }
+  register: fad_glb_vs_pool_member_post_results
+  loop: "{{ fad_glb_vs_pools | subelements('vs_pool_members') }}"
+  loop_control:
+    loop_var: vs_pool
+    label: "{{ vs_pool.1.server_member_name + ' of ' + vs_pool.0.name }}"
+  when: >
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload').mkey is undefined
+  changed_when: "fad_glb_vs_pool_member_post_results.json.payload == 0"
+  failed_when: "fad_glb_vs_pool_member_post_results.json.payload not in [0, -15]"
+
+- name: Update GLB VS Pool Member entry if it's exist and any of its value is changed.
+  ansible.builtin.uri:
+    method: PUT
+    url: "{{ fad_glb_vs_pool_member_api_endpoint | format(vs_pool.0.name, vs_pool.1.id) }}"
+    body_format: "{{ fad_api_uri_params.body_format }}"
+    validate_certs: "{{ fad_api_uri_params.validate_certs }}"
+    return_content: "{{ fad_api_uri_params.return_content }}"
+    status_code: "{{ fad_api_uri_params.status_code }}"
+    headers: "{{ fad_api_header }}"
+    body: |
+      {
+        "backup": "{{ vs_pool.1.backup | default('disable') }}",
+        "mkey": "{{ vs_pool.1.id | string }}",
+        "server": "{{ vs_pool.1.server }}",
+        "server-member-name": "{{ vs_pool.1.server_member_name }}",
+        "ttl": "{{ vs_pool.1.ttl | default('-1') | string }}",
+        "weight": "{{ vs_pool.1.weight | default('1') | string }}"
+      }
+  register: fad_glb_vs_pool_member_put_results
+  loop: "{{ fad_glb_vs_pools | subelements('vs_pool_members') }}"
+  loop_control:
+    loop_var: vs_pool
+    label: "{{ vs_pool.1.server_member_name + ' of ' + vs_pool.0.name }}"
+  when: >
+    ((lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['mkey'] is defined) and
+    (
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['backup'] != vs_pool.1.backup | default('disable') or
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['server'] != vs_pool.1.server or
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['server-member-name'] != vs_pool.1.server_member_name or
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['ttl'] != vs_pool.1.ttl | default('-1') | string or
+    (lookup('url', fad_glb_vs_pool_member_api_endpoint
+    % (vs_pool.0.name, vs_pool.1.id),validate_certs=false, split_lines=false,
+    headers=fad_api_header) | from_json).get('payload')['weight'] != vs_pool.1.weight | default('1') | string
+    )
+  changed_when: "fad_glb_vs_pool_member_put_results.json.payload == 0"
+  failed_when: "fad_glb_vs_pool_member_put_results.json.payload not in [0, -15]"
+
+- name: Print out the GLB VS Pool Member values after create/update task.
+  ansible.builtin.debug:
+    msg: >
+      {{ (lookup('url', fad_glb_vs_pool_member_api_endpoint
+      % (vs_pool.0.name, vs_pool.1.id), validate_certs=false, split_lines=false,
+      headers=fad_api_header) | from_json).get('payload') }}
+  loop: "{{ fad_glb_vs_pools | subelements('vs_pool_members') }}"
+  loop_control:
+    loop_var: vs_pool
+    label: "{{ vs_pool.1.server_member_name + ' of ' + vs_pool.0.name }}"
+  tags: [debug]

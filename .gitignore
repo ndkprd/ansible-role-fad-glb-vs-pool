@@ -1,4 +1,4 @@
 .vscode
-examples/hosts
-examples/requirements.yaml
-examples/group_vars/all.yaml
+tests/hosts
+tests/group_vars
+tests/test.yaml
