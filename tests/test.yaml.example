@@ -51,7 +51,7 @@
             weight: 10
 
   roles:
-    - ndkprd.fortiadc-glb-vs-pools
+    - ndkprd.fad_glb_vs_pool
 
   # clean-up tasks if you need to delete the resources you just create.
   tasks:
