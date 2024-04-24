@@ -56,7 +56,7 @@
       changed_when: "fad_glb_vs_pool_post_results.json.payload == 0"
       failed_when: fad_glb_vs_pool_post_results.json.payload not in [0, -15]
 
-    - name: Update GLB Server entry if it's exist and any of its value is changed.
+    - name: Update GLB VS Pools entry if it's exist and any of its value is changed.
       ansible.builtin.uri:
         method: PUT
         url: "{{ fad_glb_vs_pool_api_endpoint | format(vs_pool.name) }}"
