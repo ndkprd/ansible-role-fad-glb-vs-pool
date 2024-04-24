@@ -1,4 +1,4 @@
-# ansible-role-fortiadc-glb-vs-pools
+# ansible-role-fortiadc-glb-vs-pool
 
 ## Description
 
