@@ -1,12 +1,11 @@
 ---
 
 dependencies:
-  - ndkprd.fortiadc-glb-servers
+  - ndkprd.fad_glb_servers
 
 galaxy_info:
   author: ndkprd
-  namespace: fortiadc
-  role_name: glb_vs_pools
+  role_name: fad_glb_vs_pool
   description: An Ansible role to mange/setup Fortinet's FortiADC Global Load Balance VS Pools and its members configuration using REST API.
 
   license: MIT

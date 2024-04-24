@@ -1,6 +1,6 @@
 ---
 
-- name: Print out the GLB VS Pools existing values.
+- name: Print out the GLB VS Pool existing values.
   ansible.builtin.debug:
     msg: >
       {{ (lookup('url', fad_glb_vs_pool_api_endpoint
@@ -11,7 +11,7 @@
     label: "{{ vs_pool.name }}"
   tags: [debug]
 
-- name: Create new GLB VS Pools entry if it's not found.
+- name: Create new GLB VS Pool entry if it's not found.
   ansible.builtin.uri:
     method: POST
     url: "{{ fad_glb_vs_pool_api_endpoint | format(vs_pool.name) }}"
@@ -39,7 +39,7 @@
   changed_when: "fad_glb_vs_pool_post_results.json.payload == 0"
   failed_when: fad_glb_vs_pool_post_results.json.payload not in [0, -15]
 
-- name: Update GLB VS Pools entry if it's exist and any of its value is changed.
+- name: Update GLB VS Pool entry if it's exist and any of its value is changed.
   ansible.builtin.uri:
     method: PUT
     url: "{{ fad_glb_vs_pool_api_endpoint | format(vs_pool.name) }}"
@@ -81,7 +81,7 @@
   changed_when: "fad_glb_vs_pool_put_results.json.payload == 0"
   failed_when: "fad_glb_vs_pool_put_results.json.payload != 0 and fad_glb_vs_pool_put_results.json.payload != -15"
 
-- name: Print out the GLB VS Pools values after create/update task.
+- name: Print out the GLB VS Pool values after create/update task.
   ansible.builtin.debug:
     msg: >
       {{ (lookup('url', fad_glb_vs_pool_api_endpoint

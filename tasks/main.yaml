@@ -1,13 +1,13 @@
 ---
 
-- name: Create/update GLB VS Pools entries.
+- name: Create/update GLB VS Pool entries.
   vars:
     fad_glb_vs_pool_api_endpoint: "{{ fad_base_url + fad_api_endpoint.glb_vs_pool }}"
   ansible.builtin.import_tasks: fad_glb_vs_pool.yaml
-  tags: [fad_glb_vs_pools]
+  tags: [fad_glb_vs_pool]
 
 - name: Create/update GLB VS Pool Member entries.
   vars:
     fad_glb_vs_pool_member_api_endpoint: "{{ fad_base_url + fad_api_endpoint.glb_vs_pool_member }}"
   ansible.builtin.import_tasks: fad_glb_vs_pool_member.yaml
-  tags: [fad_glb_vs_pools, fad_glb_vs_pool_members]
+  tags: [fad_glb_vs_pool, fad_glb_vs_pool_member]
