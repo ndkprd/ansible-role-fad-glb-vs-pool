@@ -1,6 +1,6 @@
 # Run Playbook
 
-```
-ansible-galaxy install ndkprd.fortiadc-glb-vs-pools
-ansible-playbook -i 
+```bash
+ansible-galaxy install ndkprd.fad_glb_vs_pool
+ansible-playbook -i hosts test.yaml
 ```
