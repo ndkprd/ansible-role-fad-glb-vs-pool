@@ -72,7 +72,7 @@
           loop: "{{ fad_glb_vs_pools }}"
           loop_control:
             label: "{{ item.name }}"
-          tags: [cleanup, fad_glb_vs_pools]
+          tags: [cleanup, fad_glb_vs_pool]
 
         - name: Clean up the created Servers resources.
           ansible.builtin.uri:
@@ -104,4 +104,4 @@
           loop: "{{ fad_glb_data_centers }}"
           loop_control:
             label: "{{ item.name }}"
-          tags: [cleanup, fad_glb_data_centers] 
+          tags: [cleanup, fad_glb_data_center] 
